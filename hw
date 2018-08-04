@@ -1,0 +1,76 @@
+select first_name, last_name from actor;
+
+select concat(first_name, last_name) as 'Actor Name' from actor;
+
+select * from actor where first_name = 'Joe';
+
+select * from actor where last_name like '%gen%';
+
+select * from actor where last_name like '%li%'
+	order by last_name;
+
+select country_id, country from country where country in ('Afghanistan', 'Bangladesh', 'China');
+
+alter table actor
+	add middle_name blob after first_name;
+
+alter table actor
+	add description blob;
+
+alter table actor
+	drop column description;
+    
+alter table actor
+	drop column middle_name;
+
+select last_name, count(*) from actor group by last_name;
+
+select last_name, count(*) as cnt from actor group by last_name having cnt > 1;
+
+update actor
+	set first_name = replace(first_name, 'HARPO', 'GROUCHO')
+    where actor_id = 172;
+       
+select * from sakila.address join sakila.staff on (address.address_id = staff.address_id);
+
+select * from film_actor join film on film_actor.film_id = film.film_id;
+
+select * from inventory where film_id = 439 -- inventory_id, film_id, store_id
+select * from film --film_id, title, etc
+
+select count(*) 
+    from inventory 
+    where film_id in
+    (
+    select film_id 
+    from film
+    where title = 'HUNCHBACK IMPOSSIBLE'
+    );
+
+select * from payment -- payment_id, customer_id, amount
+select * from customer -- customer_id, last_name
+
+select payment.customer_id, payment.amount, customer.last_name, customer.customer_id, sum(payment.amount) as total from payment
+    join customer on payment.customer_id = customer.customer_id
+    group by customer.last_name
+    
+select * from film -- film_id, title
+select * from language
+
+select title from film where language_id in
+	(select language_id from language where language_id = 1)
+    and title like 'K%'
+    or title like 'Q%'
+    
+select * from film_actor -- actor_id, film_id
+select * from actor -- actor_id, first_name, last_name
+
+select first_name, last_name from actor where actor_id in
+	(select actor_id from film_actor where film_id in
+    (select film_id from film where title = "Alone Trip"));
+
+select * from customer -- customer_id, last_name, email, address_id
+select * from address -- address_id, city_id
+select * from country -- country_id, country
+select * from city -- city_id, city, country_id
+
